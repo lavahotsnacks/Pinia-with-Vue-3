@@ -1,14 +1,5 @@
-// Where the pinia task store will live
-// Generally speaking, for each separate global state, 
-// make a different store file for it. 
-// (e.g. state that keeps track of live comments, 
-// so make a comment store file), this is the modular approach
-
-// Lets use make a store
 import { defineStore } from "pinia";
 
-// create a store
-// two arguments: first is identifier, second argument is an object (define state)
 export const useTaskStore = defineStore('taskStore', {
     state: () => ({
         tasks: [],
@@ -36,16 +27,44 @@ export const useTaskStore = defineStore('taskStore', {
             this.tasks = data
             this.isLoading = false
         },
-        addTask(task) {
+        async addTask(task) {
             this.tasks.push(task)
+
+            const res = await fetch('http://localhost:3000/tasks', {
+                method: 'POST',
+                body: JSON.stringify(task),
+                headers: {'Content-Type' : 'application/json'}
+            })
+
+            if(res.error) {
+                console.log(res.error)
+            }
         },
-        deleteTask(id) {
+        async deleteTask(id) {
             this.tasks = this.tasks.filter(task => task.id !== id);
+
+            const res = await fetch('http://localhost:3000/tasks/' + id, {
+                method: 'DELETE',
+            })
+
+            if(res.error) {
+                console.log(res.error)
+            }
         },
-        toggleFav(id) {
+        async toggleFav(id) {
             const task = this.tasks.find(task => task.id === id);
             if (task) {
                 task.isFav = !task.isFav;
+            }
+
+            const res = await fetch('http://localhost:3000/tasks/' + id, {
+                method: 'PATCH',
+                body: JSON.stringify({isFav: task.isFav}),
+                headers: {'Content-Type' : 'application/json'}
+            })
+
+            if(res.error) {
+                console.log(res.error)
             }
         }
     }

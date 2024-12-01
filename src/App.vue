@@ -3,7 +3,6 @@
     <!-- heading -->
      <header>
       <img src="./assets/pinia-logo.svg" alt="pinia logo">
-      <!-- <h1>{{ taskStore.name }}</h1> -->
       <h1>Pinia Tasks</h1>
      </header>
 
@@ -37,10 +36,33 @@
           <TaskDetails :task="task" />
         </div>
       </div>
+
+  <!-- reset the store state --> 
+  <!-- <button @click="taskStore.$reset">reset state</button> -->
+
   </main>
 </template>
 
-<!-- <script>
+<script setup>
+import { ref } from 'vue';
+import TaskDetails from './components/TaskDetails.vue';
+import TaskForm from './components/TaskForm.vue';
+import { useTaskStore } from './stores/TaskStore';
+import { storeToRefs } from 'pinia';
+
+const taskStore = useTaskStore();
+
+// fetch tasks
+taskStore.getTasks();
+const filter = ref('all');
+
+// instead of using taskStore.isLoading, you can use isLoading directly on your template
+// const { tasks, isLoading, favs, totalCount, favCount} = storeToRefs(taskStore);
+
+</script>
+
+<!-- options aoi
+<script>
 import { ref } from 'vue'
 import TaskDetails from './components/TaskDetails.vue'
 import TaskForm from './components/TaskForm.vue';
@@ -62,19 +84,3 @@ import { useTaskStore } from './stores/TaskStore'
     }
   }
 </script> -->
-
-<script setup>
-import { ref } from 'vue';
-import TaskDetails from './components/TaskDetails.vue';
-import TaskForm from './components/TaskForm.vue';
-import { useTaskStore } from './stores/TaskStore';
-
-
-const taskStore = useTaskStore();
-
-// fetch tasks
-taskStore.getTasks();
-const filter = ref('all');
-</script>
-
-

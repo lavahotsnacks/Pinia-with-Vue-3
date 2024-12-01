@@ -13,7 +13,16 @@
     </div>
 </template>
 
-<!-- <script>
+<script setup>
+    import { useTaskStore } from '../stores/TaskStore';
+
+    const props = defineProps(['task']);
+
+    const taskStore = useTaskStore();
+</script>
+
+<!-- options api
+<script>
     import { useTaskStore } from '../stores/TaskStore';
 
     export default {
@@ -26,11 +35,3 @@
         }
     }
 </script> -->
-
-<script setup>
-    import { useTaskStore } from '../stores/TaskStore';
-
-    const props = defineProps(['task']);
-
-    const taskStore = useTaskStore();
-</script>
